@@ -20,6 +20,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Vercel entrypoint handler
+try:
+    from mangum import Mangum
+    handler = Mangum(app)
+except ImportError:
+    handler = app
+
 GEMINI_MODEL = "gemini-3.8-flash"
 SESSIONS_CACHE = {}
 
