@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>STT Transcript & AI Summary - Meeting Summary App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#00236f",
+            "primary-container": "#1e3a8a",
+            "on-primary": "#ffffff",
+            "surface": "#faf8ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f2f3ff",
+            "surface-container": "#eaedff",
+            "surface-container-high": "#e2e7ff",
+            "on-surface": "#131b2e",
+            "on-surface-variant": "#444651",
+            "outline": "#757682",
+            "outline-variant": "#c5c5d3",
+            "secondary": "#006a61",
+            "secondary-container": "#86f2e4"
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-sans text-on-surface flex flex-col min-h-screen">
+  
+  <!-- Header -->
+  <header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md border-b border-outline-variant/30">
+    <div class="h-16 px-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <a href="index.html" class="p-2 rounded-xl text-on-surface hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+        </a>
+        <h1 class="text-base font-bold text-on-surface">상담 분석 리포트 & STT 전문</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <span id="header-status" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-secondary-container/50 text-secondary">
+          동기화 완료
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View -->
+  <main class="flex-1 flex flex-col w-full max-w-xl mx-auto pt-20 pb-16 px-4">
+    
+    <!-- Top Identity Card -->
+    <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm mb-4 border border-outline-variant/30">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-primary text-white text-xs font-bold">
+            고3
+          </span>
+          <h2 id="view-student-name" class="text-lg font-bold text-on-surface">김민준 학생</h2>
+        </div>
+        <div class="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/40 text-secondary text-xs font-semibold">
+          <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+          <span>Whisper-1 STT</span>
+        </div>
+      </div>
+      <p id="view-topic" class="text-xs text-on-surface-variant font-medium mb-2">주제: 로딩 중...</p>
+      <div class="flex flex-wrap items-center gap-2 text-xs text-on-surface-variant pt-2 border-t border-outline-variant/20">
+        <span id="view-date-time" class="bg-surface-container px-2 py-0.5 rounded font-medium">2026-10-10</span>
+        <span id="view-duration" class="bg-surface-container px-2 py-0.5 rounded font-medium">00:18:42</span>
+        <span id="view-teacher" class="text-primary font-semibold ml-auto">김진학 교사</span>
+      </div>
+    </div>
+
+    <!-- AI Summary Section -->
+    <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm mb-4 border border-outline-variant/30 border-l-4 border-l-primary">
+      <div class="flex items-center gap-1.5 mb-2 text-primary">
+        <span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+        <h3 class="text-sm font-bold">AI 진학 상담 종합 요약</h3>
+      </div>
+      <div id="ai-summary-content" class="text-xs text-on-surface leading-relaxed flex flex-col gap-3">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Google Drive Sync Link Section -->
+    <div id="cloud-sync-card" class="bg-surface-container rounded-xl p-3.5 mb-4 flex items-center justify-between border border-primary/20">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-secondary text-[24px]">cloud_done</span>
+        <div>
+          <p class="text-xs font-bold text-on-surface">Google Drive 교사 전용 폴더 라우팅 완료</p>
+          <p class="text-[11px] text-on-surface-variant">Google Docs 보고서 및 오디오가 안전하게 보관되었습니다.</p>
+        </div>
+      </div>
+      <a id="btn-open-gdoc" href="#" target="_blank" class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-container shrink-0">
+        Docs 열기
+      </a>
+    </div>
+
+    <!-- Diarized Transcript Stream -->
+    <div class="flex items-center justify-between mb-2">
+      <h3 class="text-xs font-bold text-on-surface flex items-center gap-1">
+        <span class="material-symbols-outlined text-secondary text-[16px]">record_voice_over</span>
+        화자 분리 대화 전문 (STT)
+      </h3>
+      <span class="text-[11px] text-outline">Whisper 인젝션 정규화</span>
+    </div>
+
+    <div id="transcript-stream" class="flex flex-col gap-3">
+      <!-- Rendered by JS -->
+    </div>
+
+  </main>
+
+  <script>
+    (async function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const sessionId = urlParams.get('sessionId');
+
+      if (!sessionId) {
+        alert('세션 ID가 지정되지 않았습니다.');
+        location.href = 'index.html';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/sessions/${sessionId}`);
+        if (!res.ok) throw new Error('세션 정보를 찾을 수 없습니다.');
+        const session = await res.json();
+
+        // Render Session Header
+        document.getElementById('view-student-name').textContent = session.studentName;
+        document.getElementById('view-topic').textContent = `주제: ${session.topic}`;
+        document.getElementById('view-date-time').textContent = `${session.counselingDate} (${session.startTime} ~ ${session.endTime})`;
+        document.getElementById('view-duration').textContent = `상담시간: ${session.durationFormatted}`;
+        document.getElementById('view-teacher').textContent = `${session.teacherName} (${session.teacherEmail})`;
+
+        // Render AI Summary
+        const summaryBox = document.getElementById('ai-summary-content');
+        if (session.summary) {
+          let html = `<p class="bg-surface-container-low p-2.5 rounded-lg font-medium text-on-surface">${session.summary.overallReview}</p>`;
+          
+          if (session.summary.keyTopics && session.summary.keyTopics.length > 0) {
+            html += `<div><p class="font-bold text-primary mb-1">【핵심 논의 항목】</p><ul class="list-disc pl-4 space-y-1">`;
+            session.summary.keyTopics.forEach(t => html += `<li>${t}</li>`);
+            html += `</ul></div>`;
+          }
+
+          if (session.summary.actionItems && session.summary.actionItems.length > 0) {
+            html += `<div><p class="font-bold text-secondary mb-1">【Next Steps & 실천과제】</p><ul class="list-disc pl-4 space-y-1">`;
+            session.summary.actionItems.forEach(a => html += `<li>${a}</li>`);
+            html += `</ul></div>`;
+          }
+          summaryBox.innerHTML = html;
+        } else {
+          summaryBox.innerHTML = '<p class="text-outline">생성된 AI 요약이 없습니다.</p>';
+        }
+
+        // Render Google Doc Link
+        const docBtn = document.getElementById('btn-open-gdoc');
+        if (session.cloudDocUrl) {
+          docBtn.href = session.cloudDocUrl;
+        } else {
+          docBtn.classList.add('opacity-50', 'pointer-events-none');
+          docBtn.textContent = '동기화 대기중';
+        }
+
+        // Render Transcript
+        const transcriptBox = document.getElementById('transcript-stream');
+        if (session.transcript && session.transcript.length > 0) {
+          transcriptBox.innerHTML = '';
+          session.transcript.forEach(t => {
+            const isTeacher = t.speaker.includes('교사');
+            const card = document.createElement('div');
+            card.className = `p-3 rounded-xl border ${isTeacher ? 'bg-surface-container-lowest border-primary/20' : 'bg-surface-container-low border-secondary/20'}`;
+            card.innerHTML = `
+              <div class="flex items-center justify-between mb-1.5">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-6 h-6 rounded-full ${isTeacher ? 'bg-primary text-white' : 'bg-secondary text-white'} text-[11px] font-bold flex items-center justify-center">
+                    ${isTeacher ? '교' : '학'}
+                  </span>
+                  <span class="text-xs font-bold ${isTeacher ? 'text-primary' : 'text-secondary'}">${t.speaker}</span>
+                </div>
+                <span class="text-[11px] text-outline font-mono">${t.timestamp}</span>
+              </div>
+              <p class="text-xs text-on-surface leading-relaxed pl-7">${t.text}</p>
+            `;
+            transcriptBox.appendChild(card);
+          });
+        } else {
+          transcriptBox.innerHTML = '<p class="text-xs text-outline text-center py-4">STT 대화 데이터가 없습니다.</p>';
+        }
+
+      } catch (e) {
+        alert(e.message);
+      }
+    })();
+  </script>
+</body>
+</html>
