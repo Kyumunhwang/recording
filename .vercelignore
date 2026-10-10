@@ -1,6 +1,7 @@
-# Ignore python backend on Vercel static deployment
+backend/
 server.py
 .env
 gas/
 *.md
 design/
+*.txt
