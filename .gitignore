@@ -1,0 +1,20 @@
+# Sensitive credentials & environment variables (DO NOT COMMIT)
+.env
+.env.*
+
+# Local storage audio files & session records (Student privacy protection)
+storage/recordings/
+storage/sessions/
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
