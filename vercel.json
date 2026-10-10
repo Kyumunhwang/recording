@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "cleanUrls": true,
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "app.js", "use": "@vercel/static" },
+    { "src": "stt_view.html", "use": "@vercel/static" },
+    { "src": "대화저장형식.txt", "use": "@vercel/static" }
+  ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
+    { "src": "/(.*)", "dest": "/$1" }
   ]
 }
